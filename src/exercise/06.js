@@ -12,7 +12,7 @@ import {
 
 function PokemonInfo({pokemonName}) {
   const [{status, pokemon, error}, setState] = React.useState({
-    status: 'idle',
+    status: pokemonName ? 'pending' : 'idle',
     pokemon: null,
     error: null,
   })
@@ -34,10 +34,11 @@ function PokemonInfo({pokemonName}) {
   throw new Error('Serious error, should not be possible')
 }
 
-const ErrorFallback = ({error}) => (
+const ErrorFallback = ({error, resetErrorBoundary}) => (
   <div style={{color: 'orangered'}}>
     Something went wrong!
     <pre style={{whiteSpace: 'normal'}}>{error.message}</pre>
+    <button onClick={resetErrorBoundary}>Try again</button>
   </div>
 )
 
@@ -53,7 +54,10 @@ function App() {
       <PokemonForm pokemonName={pokemonName} onSubmit={handleSubmit} />
       <hr />
       <div className="pokemon-info">
-        <ErrorBoundary key={pokemonName} FallbackComponent={ErrorFallback}>
+        <ErrorBoundary
+          FallbackComponent={ErrorFallback}
+          onReset={() => setPokemonName('')}
+        >
           <PokemonInfo pokemonName={pokemonName} />
         </ErrorBoundary>
       </div>
