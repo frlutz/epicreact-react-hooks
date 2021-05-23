@@ -48,7 +48,7 @@ function Game() {
     const description = step === 0 ? 'Go to game start' : `Go to move #${step}`
     const isCurrentStep = step === currentStep
     return (
-      <li id={step}>
+      <li key={step}>
         <button disabled={isCurrentStep} onClick={() => setCurrentStep(step)}>
           {description} {isCurrentStep && '(current)'}
         </button>
